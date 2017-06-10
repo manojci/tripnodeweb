@@ -5,22 +5,11 @@ var express = require('express'),
     http = require('http'),
     path = require('path'),
     mongoose = require('mongoose'),
+    UserModel = require('./models/UserModel'),
     hash = require('./pass').hash;
 
 var app = express();
 
-/*
-Database and Models
-*/
-mongoose.connect("mongodb://localhost/myapp");
-var UserSchema = new mongoose.Schema({
-    username: String,
-    password: String,
-    salt: String,
-    hash: String
-});
-
-var User = mongoose.model('users', UserSchema);
 /*
 Middlewares and configurations 
 */
@@ -49,7 +38,7 @@ Helper Functions
 function authenticate(name, pass, fn) {
     if (!module.parent) console.log('authenticating %s:%s', name, pass);
 
-    User.findOne({
+    UserModel.User.findOne({
         username: name
     },
 
@@ -78,7 +67,7 @@ function requiredAuthentication(req, res, next) {
 }
 
 function userExist(req, res, next) {
-    User.count({
+    UserModel.User.count({
         username: req.body.username
     }, function (err, count) {
         if (count === 0) {
@@ -98,7 +87,7 @@ app.get("/", function (req, res) {
     if (req.session.user) {
         res.send("Welcome " + req.session.user.username + "<br>" + "<a href='/logout'>logout</a>");
     } else {
-        res.send("<a href='/login'> Login</a>" + "<br>" + "<a href='/signup'> Sign Up</a>");
+        res.send("<a href='/login'> Sign In</a>" + "<br>" + "<a href='/signup'> Register</a>");
     }
 });
 
@@ -116,7 +105,7 @@ app.post("/signup", userExist, function (req, res) {
 
     hash(password, function (err, salt, hash) {
         if (err) throw err;
-        var user = new User({
+        var user = new UserModel.User({
             username: username,
             salt: salt,
             hash: hash,
