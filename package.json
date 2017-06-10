@@ -9,6 +9,7 @@
     "express": "3.0.0rc4",
     "jade": "*",
     "mongoose": "*",
+    "node-rest-client": "^3.1.0",
     "nodemon": "*",
     "properties-reader": "0.0.15"
   }

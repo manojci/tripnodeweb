@@ -9,9 +9,11 @@ var express = require('express'),
     helper = require('./utils/helper'),
     login = require('./controllers/login'),
     register = require('./controllers/register'),
+    search = require('./controllers/search'),
     hash = require('./pass').hash;
 
 var app = express();
+var travelDetails;
 
 /*
 Middlewares and configurations 
@@ -36,10 +38,6 @@ app.use(function (req, res, next) {
     next();
 });
 
-/*
-Routes
-*/
-
 app.get("/search", function (req, res) {
     res.render("search");
 });
@@ -49,19 +47,19 @@ app.get("/", function (req, res) {
     if (req.session.user) {
         res.redirect("/search");
     } else {
-        res.send("<a href='/login'> Sign In</a>" + "<br>" + "<a href='/signup'> Register</a>");
+        res.send("<a href='/login'> Sign In</a>" + "<br>" + "<a href='/register'> Register</a>");
     }
 });
 
-app.get("/signup", function (req, res) {
+app.get("/register", function (req, res) {
     if (req.session.user) {
         res.redirect("/");
     } else {
-        res.render("signup");
+        res.render("register");
     }
 });
 
-app.post("/signup", helper.userExist, function (req, res) {
+app.post("/register", helper.userExist, function (req, res) {
     register.registerHandler(req , res);
 });
 
@@ -69,8 +67,19 @@ app.get("/login", function (req, res) {
     res.render("login");
 });
 
+app.get("/travelinfo", function (req, res) {
+    res.render("travelinfo", {travelinfo : travelDetails});
+});
+
 app.post("/login", function (req, res) {
     login.loginHandler(req, res);
+});
+
+app.post("/search", function (req, res) {
+    search.searchHandler(req, res, function (err, travelinfo) {
+        travelDetails = travelinfo;
+        res.redirect("/travelinfo");
+    });
 });
 
 app.get('/logout', function (req, res) {

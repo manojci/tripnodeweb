@@ -1,0 +1,23 @@
+div
+  table
+    thead
+      tr
+        th Id
+        th Flight Number
+        th Flight Name
+        th Flight code
+        th Origin
+        th Destination
+        th Price
+        th Book
+    tbody
+      each flight, i in travelinfo
+        tr
+          td #{flight.id}
+          td #{flight.flightNumber}
+          td #{flight.flightName}
+          td #{flight.flightCode}
+          td #{flight.route.origin}
+          td #{flight.route.destination}
+          td #{flight.fare.price}
+          td <a href='/flight/#{flight.id}'> Book</a>
