@@ -2,26 +2,28 @@
 Helper Functions
 */
 var UserModel = require('../models/UserModel'),
+    Client = require('node-rest-client').Client,
+    PropertiesReader = require('properties-reader'),
     hash = require('../pass').hash;
+
+var client = new Client();
+var properties = PropertiesReader('./config/dev/application.properties');
 
 module.exports.authenticate = function (name, pass, fn) {
         if (!module.parent) console.log('authenticating %s:%s', name, pass);
-
-        UserModel.User.findOne({
-            username: name
-        },
-
-        function (err, user) {
-            if (user) {
-                if (err) return fn(new Error('cannot find user'));
-                hash(pass, user.salt, function (err, hash) {
-                    if (err) return fn(err);
-                    if (hash == user.hash) return fn(null, user);
-                    fn(new Error('invalid password'));
-                });
-            } else {
-                return fn(new Error('cannot find user'));
-            }
+        var queryString = "?username=" + name;
+        client.get(properties.get('eureka.client.user.url') , function (data, response) {
+            client.get(data + queryString, function (data, response) {
+                if (data) {
+                    hash(pass, data.salt, function (err, hash) {
+                        if (err) return fn(err);
+                        if (hash == data.hash) return fn(null, data);
+                        fn(new Error('invalid password'));
+                    });
+                } else {
+                    return fn(new Error('cannot find user'));
+                }
+            });
         });
 }
 module.exports.requiredAuthentication = function (req, res, next) {
