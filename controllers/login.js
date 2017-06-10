@@ -8,11 +8,11 @@ module.exports.loginHandler = function (req, res) {
 
                 req.session.user = user;
                 req.session.success = 'Authenticated as ' + user.username + ' click to <a href="/logout">logout</a>. ' + ' You may now access <a href="/restricted">/restricted</a>.';
-                res.redirect('/');
+                res.redirect('/cleartrip');
             });
         } else {
             req.session.error = 'Authentication failed, please check your ' + ' username and password.';
-            res.redirect('/login');
+            res.redirect('/cleartrip/login');
         }
     });
 }

@@ -38,47 +38,47 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.get("/search", function (req, res) {
+app.get("/cleartrip/search", function (req, res) {
     res.render("search");
 });
 
-app.get("/", function (req, res) {
+app.get("/cleartrip", function (req, res) {
 
     if (req.session.user) {
-        res.redirect("/search");
+        res.redirect("/cleartrip/search");
     } else {
-        res.send("<a href='/login'> Sign In</a>" + "<br>" + "<a href='/register'> Register</a>");
+        res.send("<a href='/cleartrip/login'> Sign In</a>" + "<br>" + "<a href='/cleartrip/register'> Register</a>");
     }
 });
 
-app.get("/register", function (req, res) {
+app.get("/cleartrip/register", function (req, res) {
     if (req.session.user) {
-        res.redirect("/");
+        res.redirect("/cleartrip");
     } else {
         res.render("register");
     }
 });
 
-app.post("/register", helper.userExist, function (req, res) {
+app.post("/cleartrip/register", helper.userExist, function (req, res) {
     register.registerHandler(req , res);
 });
 
-app.get("/login", function (req, res) {
+app.get("/cleartrip/login", function (req, res) {
     res.render("login");
 });
 
-app.get("/travelinfo", function (req, res) {
+app.get("/cleartrip/travelinfo", function (req, res) {
     res.render("travelinfo", {travelinfo : travelDetails});
 });
 
-app.post("/login", function (req, res) {
+app.post("/cleartrip/login", function (req, res) {
     login.loginHandler(req, res);
 });
 
-app.post("/search", function (req, res) {
+app.post("/cleartrip/search", function (req, res) {
     search.searchHandler(req, res, function (err, travelinfo) {
         travelDetails = travelinfo;
-        res.redirect("/travelinfo");
+        res.redirect("/cleartrip/travelinfo");
     });
 });
 
