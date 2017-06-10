@@ -82,10 +82,15 @@ function userExist(req, res, next) {
 /*
 Routes
 */
+
+app.get("/search", function (req, res) {
+    res.render("search");
+});
+
 app.get("/", function (req, res) {
 
     if (req.session.user) {
-        res.send("Welcome " + req.session.user.username + "<br>" + "<a href='/logout'>logout</a>");
+        res.redirect("/search");
     } else {
         res.send("<a href='/login'> Sign In</a>" + "<br>" + "<a href='/signup'> Register</a>");
     }
