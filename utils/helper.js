@@ -9,21 +9,26 @@ var UserModel = require('../models/UserModel'),
 var client = new Client();
 var properties = PropertiesReader('./config/dev/application.properties');
 
-module.exports.authenticate = function (name, pass, fn) {
-        if (!module.parent) console.log('authenticating %s:%s', name, pass);
-        var queryString = "?username=" + name;
+module.exports.authenticate = function (req, res, fn) {
+        if (!module.parent) console.log('authenticating %s:%s', req.body.username, req.body.password);
+        var queryString = "?username=" + req.body.username;
         client.get(properties.get('eureka.client.user.url') , function (data, response) {
-            client.get(data + queryString, function (data, response) {
-                if (data) {
-                    hash(pass, data.salt, function (err, hash) {
-                        if (err) return fn(err);
-                        if (hash == data.hash) return fn(null, data);
-                        fn(new Error('invalid password'));
-                    });
-                } else {
-                    return fn(new Error('cannot find user'));
-                }
-            });
+            if (data[0] === null) {
+                req.session.error = "User Register Service Not Available.Please contact the administrator.";
+                res.redirect('/cleartrip/login');
+            } else {
+                client.get(data + queryString, function (data, response) {
+                    if (data.username !== undefined) {
+                        hash(req.body.password, data.salt, function (err, hash) {
+                            if (err) return fn(err);
+                            if (hash == data.hash) return fn(null, data);
+                            fn(new Error('Authentication failed, please check your username and password!!'));
+                        });
+                    } else {
+                        return fn(new Error('Wrong Credentials!!'));
+                    }
+                });
+            }
         });
 }
 module.exports.requiredAuthentication = function (req, res, next) {

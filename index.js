@@ -9,6 +9,7 @@ var express = require('express'),
     helper = require('./utils/helper'),
     login = require('./controllers/login'),
     register = require('./controllers/register'),
+    route = require('./controllers/route'),
     search = require('./controllers/search'),
     hash = require('./utils/crypto').hash;
 
@@ -42,6 +43,18 @@ app.get("/cleartrip/search", helper.requiredAuthentication, function (req, res) 
     res.render("search");
 });
 
+app.get("/cleartrip/route", helper.requiredAuthentication, function (req, res) {
+    res.render("route");
+});
+app.get("/cleartrip/fare", helper.requiredAuthentication, function (req, res) {
+    res.render("fare");
+});
+app.get("/cleartrip/flight", helper.requiredAuthentication, function (req, res) {
+    res.render("flight");
+});
+app.get("/cleartrip/admin", helper.requiredAuthentication, function (req, res) {
+    res.render("admin");
+});
 app.get("/cleartrip", function (req, res) {
 
     if (req.session.user) {
@@ -57,6 +70,10 @@ app.get("/cleartrip/register", function (req, res) {
     } else {
         res.render("register");
     }
+});
+
+app.post("/cleartrip/add/route", function (req, res) {
+    route.routeHandler(req , res);
 });
 
 app.post("/cleartrip/register", helper.userExist, function (req, res) {

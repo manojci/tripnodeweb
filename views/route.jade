@@ -1,0 +1,22 @@
+style.
+	.origin {
+		margin-left: 64px;
+		margin-top: 5px;
+		margin-bottom: 5px;
+	}
+	.destination {
+		margin-left: 32px;
+		margin-top: 5px;
+		margin-bottom: 5px;
+	}
+form(id="route", method="POST", action="/cleartrip/add/route")
+	div
+		lable(for='origin') Origin
+		input.origin#origin(type='text', name='origin')
+	div
+		lable(for='destination') Destination
+		input.destination#destination(type='text', name='destination')
+	div
+		input(type='submit', value='Submit')
+		
+h1!=message
