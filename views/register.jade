@@ -1,8 +1,34 @@
+style.
+	.common {
+		margin-left: 20px;
+		margin-top: 5px;
+		margin-bottom: 5px;
+	}
+	#password {
+		margin-left: 32px;
+		margin-top: 5px;
+		margin-bottom: 5px;
+	}
 form(id="signup", method="POST", action="/cleartrip/register")
-	lable(for='username') User Name
-	input#username(type='text', name='username')
-	lable(for='password') Password
-	input#password(type='password', name='password')
-	input(type="submit", value="Register")
+		div 
+			lable(for='username') User Name 
+			input.common#username(type='text', name='username')
+		div 
+			lable(for='firstname') First Name 
+			input.common#firstname(type='text', name='firstname')
+		div 
+			lable(for='lastname') Last Name 
+			input.common#lastname(type='text', name='lastname')
+		div
+			lable(for='password') Password
+			input#password(type='password', name='password')
+		div 
+			lable(for='gender') Gender
+			input#gender.common(type='checkbox', name='gender', value='M') 
+			lable(for='checkbox') Male
+			input#gender.common(type='checkbox', name='gender', value='F') 
+			lable(for='checkbox') Female
+		div
+			input(type='submit', value='Register')
 
 h1!=message

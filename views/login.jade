@@ -1,8 +1,22 @@
+style.
+	.common {
+		margin-left: 20px;
+		margin-top: 5px;
+		margin-bottom: 5px;
+	}
+	#password {
+		margin-left: 32px;
+		margin-top: 5px;
+		margin-bottom: 5px;
+	}
 form(id="login", method="POST", action="/cleartrip/login")
-	lable(for='username') User Name
-	input#username(type='text', name='username')
-	lable(for='password') Password
-	input#password(type='password', name='password')
-	input(type="submit", value="Log In")
+	div
+		lable(for='username') User Name
+		input.common#username(type='text', name='username')
+	div
+		lable(for='password') Password
+		input#password(type='password', name='password')
+	div
+		input(type='submit', value='Sign In')
 		
 h1!=message

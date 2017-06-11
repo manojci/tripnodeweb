@@ -9,6 +9,9 @@ mongoose.connect(properties.get('mongo.host.url'));
 var UserSchema = new mongoose.Schema({
     username: String,
     password: String,
+    firstname: String,
+    lastname: String,
+    gender: String,
     salt: String,
     hash: String
 });

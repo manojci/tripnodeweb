@@ -8,11 +8,17 @@ var properties = PropertiesReader('./config/dev/application.properties');
 module.exports.registerHandler = function (req, res) {
     var password = req.body.password;
     var username = req.body.username;
+    var firstname = req.body.firstname;
+    var lastname = req.body.lastname;
+    var gender = req.body.gender
 
     hash(password, function (err, salt, hash) {
         if (err) throw err;
         var user = new UserModel.User({
             username: username,
+            firstname: firstname,
+            lastname: lastname,
+            gender: gender,
             salt: salt,
             hash: hash,
         });

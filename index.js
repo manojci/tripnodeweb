@@ -10,7 +10,7 @@ var express = require('express'),
     login = require('./controllers/login'),
     register = require('./controllers/register'),
     search = require('./controllers/search'),
-    hash = require('./pass').hash;
+    hash = require('./utils/crypto').hash;
 
 var app = express();
 var travelDetails;
@@ -38,7 +38,7 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.get("/cleartrip/search", function (req, res) {
+app.get("/cleartrip/search", helper.requiredAuthentication, function (req, res) {
     res.render("search");
 });
 
@@ -67,7 +67,7 @@ app.get("/cleartrip/login", function (req, res) {
     res.render("login");
 });
 
-app.get("/cleartrip/travelinfo", function (req, res) {
+app.get("/cleartrip/travelinfo", helper.requiredAuthentication, function (req, res) {
     res.render("travelinfo", {travelinfo : travelDetails});
 });
 
@@ -88,7 +88,7 @@ app.get('/logout', function (req, res) {
     });
 });
 
-app.get('/profile', helper.requiredAuthentication, function (req, res) {
+app.get('/cleartrip/profile', helper.requiredAuthentication, function (req, res) {
     res.send('Profile page of '+ req.session.user.username +'<br>'+' click to <a href="/logout">logout</a>');
 });
 

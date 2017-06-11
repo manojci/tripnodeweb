@@ -31,7 +31,7 @@ module.exports.requiredAuthentication = function (req, res, next) {
         next();
     } else {
         req.session.error = 'Access denied!';
-        res.redirect('/login');
+        res.redirect('/cleartrip/login');
     }
 }
 module.exports.userExist = function (req, res, next) {

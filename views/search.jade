@@ -1,8 +1,22 @@
+style.
+	.origin {
+		margin-left: 27px;
+		margin-top: 5px;
+		margin-bottom: 5px;
+	}
+	.destination {
+		margin-left: 45px;
+		margin-top: 5px;
+		margin-bottom: 5px;
+	}
 form(id="search", method="POST", action="/cleartrip/search")
-	lable(for='origin') From
-	input#origin(type='text', name='origin')
-	lable(for='destination') To
-	input#destination(type='text', name='destination')
-	input(type="submit", value="Search")
+	div
+		lable(for='origin') From
+		input.origin#origin(type='text', name='origin')
+	div
+		lable(for='destination') To
+		input.destination#destination(type='text', name='destination')
+	div
+		input(type='submit', value='Search')
 
 h1!=message
