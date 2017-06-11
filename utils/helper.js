@@ -4,7 +4,7 @@ Helper Functions
 var UserModel = require('../models/UserModel'),
     Client = require('node-rest-client').Client,
     PropertiesReader = require('properties-reader'),
-    hash = require('../pass').hash;
+    hash = require('./crypto').hash;
 
 var client = new Client();
 var properties = PropertiesReader('./config/dev/application.properties');

@@ -1,5 +1,5 @@
 var UserModel = require('../models/UserModel'),
-    hash = require('../pass').hash,
+    hash = require('../utils/crypto').hash,
     Client = require('node-rest-client').Client,
     PropertiesReader = require('properties-reader'),
     helper = require('../utils/helper');
