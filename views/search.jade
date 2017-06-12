@@ -12,11 +12,14 @@ style.
 form(id="search", method="POST", action="/cleartrip/search")
 	div
 		lable(for='origin') From
-		input.origin#origin(type='text', name='origin')
+		select#origin.origin(name="origin")
+			each city, i in citylist
+				option(value='#{city}') #{city}
 	div
 		lable(for='destination') To
-		input.destination#destination(type='text', name='destination')
+		select#destination.destination(name="destination")
+			each city, i in citylist
+				option(value='#{city}') #{city}
 	div
 		input(type='submit', value='Search')
-
 h1!=message

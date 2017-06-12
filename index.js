@@ -9,12 +9,14 @@ var express = require('express'),
     helper = require('./utils/helper'),
     login = require('./controllers/login'),
     register = require('./controllers/register'),
+    city = require('./controllers/city'),
     route = require('./controllers/route'),
     search = require('./controllers/search'),
     hash = require('./utils/crypto').hash;
 
 var app = express();
 var travelDetails;
+var cityinfo;
 
 /*
 Middlewares and configurations 
@@ -39,10 +41,18 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.get("/cleartrip/search", helper.requiredAuthentication, function (req, res) {
-    res.render("search");
+app.get("/cleartrip/home", helper.requiredAuthentication, function (req, res) {
+    res.render("home");
 });
-
+app.get("/cleartrip/search", helper.requiredAuthentication, function (req, res) {
+    city.citySearchHandler(req, res, function (err, citylist) {
+        cityinfo = citylist;
+        res.redirect("/cleartrip/citysearch");
+    });
+});
+app.get("/cleartrip/citysearch", helper.requiredAuthentication, function (req, res) {
+    res.render("search", {citylist : cityinfo});
+});
 app.get("/cleartrip/route", helper.requiredAuthentication, function (req, res) {
     res.render("route");
 });
@@ -56,9 +66,8 @@ app.get("/cleartrip/admin", helper.requiredAuthentication, function (req, res) {
     res.render("admin");
 });
 app.get("/cleartrip", function (req, res) {
-
     if (req.session.user) {
-        res.redirect("/cleartrip/search");
+        res.redirect("/cleartrip/home");
     } else {
         res.send("<a href='/cleartrip/login'> Sign In</a>" + "<br>" + "<a href='/cleartrip/register'> Register</a>");
     }
@@ -99,9 +108,9 @@ app.post("/cleartrip/search", function (req, res) {
     });
 });
 
-app.get('/logout', function (req, res) {
+app.get('/cleartrip/logout', function (req, res) {
     req.session.destroy(function () {
-        res.redirect('/');
+        res.redirect('/cleartrip');
     });
 });
 
