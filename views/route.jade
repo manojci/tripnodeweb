@@ -1,21 +1,25 @@
 style.
 	.origin {
-		margin-left: 64px;
+		margin-left: 27px;
 		margin-top: 5px;
 		margin-bottom: 5px;
 	}
 	.destination {
-		margin-left: 32px;
+		margin-left: 45px;
 		margin-top: 5px;
 		margin-bottom: 5px;
 	}
 form(id="route", method="POST", action="/cleartrip/add/route")
 	div
-		lable(for='origin') Origin
-		input.origin#origin(type='text', name='origin')
+		lable(for='origin') From
+		select#origin.origin(name="origin")
+			each city, i in citylist
+				option(value='#{city}') #{city}
 	div
-		lable(for='destination') Destination
-		input.destination#destination(type='text', name='destination')
+		lable(for='destination') To
+		select#destination.destination(name="destination")
+			each city, i in citylist
+				option(value='#{city}') #{city}
 	div
 		input(type='submit', value='Submit')
 		

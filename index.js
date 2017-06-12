@@ -41,20 +41,47 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.get("/cleartrip/home", helper.requiredAuthentication, function (req, res) {
+app.get("/cleartrip/user/home", helper.requiredAuthentication, function (req, res) {
     res.render("home");
 });
-app.get("/cleartrip/search", helper.requiredAuthentication, function (req, res) {
+app.get("/cleartrip/user/search", helper.requiredAuthentication, function (req, res) {
     city.citySearchHandler(req, res, function (err, citylist) {
-        cityinfo = citylist;
-        res.redirect("/cleartrip/citysearch");
+        if(err !== undefined) {
+            req.session.error = "City Service Not Available.Please contact the administrator.";
+            res.redirect('/cleartrip/user/home');
+        } else {
+            cityinfo = citylist;
+            res.redirect("/cleartrip/citysearch");
+        }
+    });
+});
+app.get("/cleartrip/admin/search", helper.requiredAuthentication, function (req, res) {
+    city.citySearchHandler(req, res, function (err, citylist) {
+        if(err !== undefined) {
+            req.session.error = "City Service Not Available.Please contact the administrator.";
+            res.redirect('/cleartrip/admin/home');
+        } else {
+            cityinfo = citylist;
+            res.redirect("/cleartrip/citysearch");
+        }
     });
 });
 app.get("/cleartrip/citysearch", helper.requiredAuthentication, function (req, res) {
     res.render("search", {citylist : cityinfo});
 });
 app.get("/cleartrip/route", helper.requiredAuthentication, function (req, res) {
-    res.render("route");
+    city.citySearchHandler(req, res, function (err, citylist) {
+        if(err !== undefined) {
+            req.session.error = "City Service Not Available.Please contact the administrator.";
+            res.redirect('/cleartrip/admin/home');
+        } else {
+            cityinfo = citylist;
+            res.redirect("/cleartrip/add/route");
+        }
+    });
+});
+app.get("/cleartrip/add/route", helper.requiredAuthentication, function (req, res) {
+    res.render("route", {citylist : cityinfo});
 });
 app.get("/cleartrip/fare", helper.requiredAuthentication, function (req, res) {
     res.render("fare");
@@ -62,12 +89,12 @@ app.get("/cleartrip/fare", helper.requiredAuthentication, function (req, res) {
 app.get("/cleartrip/flight", helper.requiredAuthentication, function (req, res) {
     res.render("flight");
 });
-app.get("/cleartrip/admin", helper.requiredAuthentication, function (req, res) {
+app.get("/cleartrip/admin/home", helper.requiredAuthentication, function (req, res) {
     res.render("admin");
 });
 app.get("/cleartrip", function (req, res) {
     if (req.session.user) {
-        res.redirect("/cleartrip/home");
+        res.redirect("/cleartrip/user/home");
     } else {
         res.send("<a href='/cleartrip/login'> Sign In</a>" + "<br>" + "<a href='/cleartrip/register'> Register</a>");
     }
